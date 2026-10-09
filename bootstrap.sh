@@ -4,7 +4,7 @@
 # ejecute el resto del spec. Idempotente: se puede volver a correr.
 #
 # Uso (desde el PC, como tu usuario normal con sudo):
-#   curl -fsSL https://raw.githubusercontent.com/<OWNER>/<REPO>/main/bootstrap.sh | bash
+#   git clone https://github.com/haefrain/servidor-ia d && bash d/bootstrap.sh
 # o, si ya clonaste el repo:
 #   bash bootstrap.sh
 
@@ -65,8 +65,13 @@ fi
 
 # ---------------------------------------------------------------- repo
 log "Clonando el spec en $DEST"
+SELF_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd || true)"
 if [[ -d "$DEST/.git" ]]; then
   git -C "$DEST" pull --ff-only
+elif [[ -n "$SELF_DIR" && -d "$SELF_DIR/.git" && "$SELF_DIR" != "$DEST" ]]; then
+  # Se corrió desde un clone en otra ruta (ej. "git clone ... d && bash d/bootstrap.sh"): lo movemos
+  mkdir -p "$(dirname "$DEST")"
+  mv "$SELF_DIR" "$DEST"
 elif [[ "$REPO_URL" == *"__OWNER__"* ]]; then
   warn "REPO_URL no está configurada; copia SPEC.md y CLAUDE.md a $DEST a mano."
   mkdir -p "$DEST"

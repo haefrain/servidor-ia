@@ -20,7 +20,7 @@ Servidor de inferencia local (llama.cpp + CUDA) en un PC con i5-12600K, RTX 3070
 **2. Bootstrap (un comando)**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/haefrain/servidor-ia/main/bootstrap.sh | bash
+git clone https://github.com/haefrain/servidor-ia d && bash d/bootstrap.sh
 ```
 
 Instala actualizaciones, Tailscale, Claude Code y clona este repo en `~/dev/servidor-ia`. Es idempotente.
